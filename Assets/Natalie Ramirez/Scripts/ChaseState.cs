@@ -7,6 +7,9 @@ namespace NatalieRoman
     {
         [SerializeField] Transform player;//player ref 
         [SerializeField] NavMeshAgent agent;//annihilator nav agent  ref
+        [SerializeField] AnnihilatorController controller;
+        [SerializeField] MeleeState meleeState;
+        [SerializeField] float meleeRange = 3f;
 
         public override void EnterState()
         {
@@ -27,6 +30,15 @@ namespace NatalieRoman
                 return;//if none 
             }
 
+            float distance = Vector3.Distance(transform.position,player.position);//check dist between player and annihilator
+
+            //if player is close enough attack 
+            if (distance <= meleeRange)
+            {
+                controller.ChangeState(meleeState);
+                return;
+            }
+            
             agent.SetDestination(player.position);//update dest with current position 
         }
 
